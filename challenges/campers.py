@@ -42,6 +42,23 @@ players with IDs 4 and 8, so that you will have a total of 4 players.
 
 Camper: A player in a professional team dedicated to using the AWP
 sniper rifle.
+
+Python SOLUTION
+
+N, K = [int(x) for x in raw_input().strip().split(' ')]
+a = sorted([int(x) for x in raw_input().strip().split(' ')])
+ans = K
+
+for i in xrange(1, K):
+    ans += (a[i] - a[i - 1] - 2) / 2
+
+if (a[0] > 2):
+    ans += (a[0] - 1) / 2
+
+if (a[K - 1] < N - 1):
+    ans += (N + 1 - a[K - 1] - 1) / 2
+
+print ans
 """
 
 import unittest
@@ -71,7 +88,7 @@ class Team(object):
                 set(self.players) - set(self.not_seletable_players)))
             self.players_selected = sorted(list(
                 set(self.snippers + self.left_players)))
-            self.__calc_number_of_players_selected()
+            self.__calc_number_of_players_selected1()
 
     def __set_not_selectable_players(self):
         not_seletable_players = []
@@ -183,6 +200,14 @@ class CamperTest(unittest.TestCase):
         logger.debug(team)
         self.assertEqual(
             team.number_of_players_selected, 1,
+            "Incorrect Answer: {}".format(team.number_of_players_selected))
+
+    def testTeamWith1000players15Snippers(self):
+        team = Team(1000, 15, [936,693,92,854,622,453,512,541,190,763,302,587,250,402,585])
+        logger = logging.getLogger('TestTeamWith2players1Snippers1')
+        logger.debug(team)
+        self.assertEqual(
+            team.number_of_players_selected, 497,
             "Incorrect Answer: {}".format(team.number_of_players_selected))
 
 if __name__ == '__main__':
