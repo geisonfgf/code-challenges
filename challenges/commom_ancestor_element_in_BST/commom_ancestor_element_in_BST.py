@@ -47,7 +47,6 @@ class BinaryTree():
             if manager.parent:
                 aux_manager = manager.parent
                 manager = aux_manager
-            
         
     def __str__(self):
         def str_helper(tree, level):
