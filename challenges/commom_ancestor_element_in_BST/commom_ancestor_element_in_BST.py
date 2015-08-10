@@ -32,21 +32,26 @@ class BinaryTree():
                 new_node.right = tree
 
     def first_common_ancestor(self, node, first_employee, second_employee):
-        manager = None
-        if first_employee.level > second_employee.level:
-            manager = first_employee.parent
-        else:
-            manager = second_employee.parent
-        for i in xrange(max(first_employee.level, second_employee.level)):
-            if ((manager == first_employee.parent) and
-                    (first_employee.level < second_employee.level)):
-                return manager.key
-            elif ((manager == second_employee.parent) and
-                    (first_employee.level > second_employee.level)):
-                return manager.key
-            if manager.parent:
-                aux_manager = manager.parent
-                manager = aux_manager
+        first_employee_manager = first_employee.parent
+        second_employee_manager = second_employee.parent
+        while first_employee_manager.level != second_employee_manager.level:
+            if first_employee_manager.level > second_employee_manager.level:
+                if first_employee_manager.parent:
+                    aux_manager = first_employee_manager.parent
+                    first_employee_manager = aux_manager
+            else:
+                if second_employee_manager.parent:
+                    aux_manager = second_employee_manager.parent
+                    second_employee_manager = aux_manager
+        while first_employee_manager.key != second_employee_manager.key:
+            if (first_employee_manager.parent and
+                    second_employee_manager.parent and
+                    first_employee_manager.key != second_employee_manager.key):
+                aux_manager = first_employee_manager.parent
+                first_employee_manager = aux_manager
+                aux_manager = second_employee_manager.parent
+                second_employee_manager = aux_manager
+        return first_employee_manager.key
         
     def __str__(self):
         def str_helper(tree, level):
@@ -67,7 +72,7 @@ def OutputCommonManager(count):
         manager, employee = raw_input().split(" ")
         if index == 0:
             org_tree = BinaryTree(manager)
-            org_tree.insert(org_tree, employee, 0)
+            org_tree.insert(org_tree, employee, 1)
             if first_employee == manager:
                 first_employee_node = org_tree
             elif first_employee == employee:
