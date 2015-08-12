@@ -28,17 +28,20 @@ class Node:
 
         while stack:
             node = stack.pop()
-            print str(node.data) + " - " + str(value)
-            if node.left:
-                stack.append(node.left)
-            elif node.right:
-                stack.append(node.right)
+            if node.left is None and node.right is None:
+                node.left = Node(value)
+                break
+            elif node.left and node.right is None:
+                node.right = Node(value)
+                break
+            print str(value) + " - " + str(node.data)
             if value < node.data:
-                aux_node = Node(value)
-                node.left = aux_node
+                if node.left:
+                    stack.append(node.left)
             else:
-                aux_node = Node(value)
-                node.right = aux_node
+                if node.right:
+                    stack.append(node.right)
+            
     
     def __str_tree_builder(self, node, level):
         str_tree = []
