@@ -52,17 +52,19 @@ class BinaryTree():
                 aux_manager = second_employee_manager.parent
                 second_employee_manager = aux_manager
         return first_employee_manager.key
-        
-    def __str__(self):
-        def str_helper(tree, level):
-            result = ""
-            if tree:
-                result += str_helper(tree.right, level + 1)
-                result += "| " * level
-                result += tree.key + " - " + str(tree.level) + "\n"
-                result += str_helper(tree.left, level + 1)
-            return result
-        return str_helper(self, 0)
+
+    def __str_tree_builder(self, node, level):
+        str_tree = []
+        if node:
+            str_tree.append(self.__str_tree_builder(node.right, level + 1))
+            str_tree.append("| " * level)
+            str_tree.append(
+                ''.join([str(node.data), " - ", str(node.level), "\n"]))
+            str_tree.append(self.__str_tree_builder(node.left, level + 1))
+        return ''.join(str_tree)
+
+    def __repr__(self):
+        return self.__str_tree_builder(self, 0)
 
 def OutputCommonManager(count):
     first_employee, second_employee = raw_input(), raw_input()
