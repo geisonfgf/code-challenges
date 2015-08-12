@@ -28,20 +28,20 @@ class Node:
 
         while stack:
             node = stack.pop()
+            if value < node.data and node.left:
+                stack.append(node.left)
+            elif node.right:
+                stack.append(node.right)
             if node.left is None and node.right is None:
                 node.left = Node(value)
-                break
             elif node.left and node.right is None:
                 node.right = Node(value)
-                break
-            print str(value) + " - " + str(node.data)
-            if value < node.data:
-                if node.left:
-                    stack.append(node.left)
-            else:
-                if node.right:
-                    stack.append(node.right)
-            
+
+    def get_height(self, node):
+        if node is None:
+            return 0
+        return 1 + max(self.get_height(node.left), self.get_height(node.right))
+
     
     def __str_tree_builder(self, node, level):
         str_tree = []
@@ -64,4 +64,5 @@ root.insert(root, 5)
 root.insert(root, 6)
 root.insert(root, 7)
 
+print "BST height is:", root.get_height(root)
 print root
