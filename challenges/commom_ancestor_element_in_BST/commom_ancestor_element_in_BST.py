@@ -1,3 +1,48 @@
+"""
+You are given as standard input the number of employees in a company, the
+first names of two selected employees in a company, and the direct line
+management relations between every employee. Each person in the company
+can directly line manage a maximum of 2 other employees. The input has
+the following format:
+ 
+ 
+on the first line, the number of unique employees in the company
+on the second line, the name of the first selected employee (a first name
+only without spaces)
+on the third line, the name of the second selected employee (a first name
+only without spaces, guaranteed to be different from the first selected
+employee)
+on the subsequent lines, the line management relations in the format
+"EmployeeX EmployeeY" - meaning EmployeeX manages EmployeeY (first names
+without spaces and spaces are used to separate the two names)
+ 
+The input is correct (there are only direct line management relations, no
+cycles, all employees appear in the input).  For simplicity, the first line
+after the selected employees (line 4) always contains the manager at the top
+of the hierarchy.
+ 
+Write a program that reads the input from stdin and then outputs out the name
+of the single employee at the lowest point in the hierarchy to which the two
+selected employees report, either directly or indirectly. If one employee
+reports to the other, either directly or indirectly, print out the name of
+the highest of the two selected employees.
+ 
+Examples: 
+ 
+Input:                  Input:                  Input:
+6                       4                       5
+Hilary                  Simon                   Gareth
+James                   Claudiu                 Alex
+Sarah Fred              Sarah Claudiu           June Alex
+Sarah Paul              Sarah Paul              June Qing
+Fred Hilary             Claudiu Simon           Qing Paul
+Fred Jenny                                      Qing Gareth
+Jenny James
+ 
+Output:                 Output:                 Output:
+Fred                    Sarah                   June
+"""
+
 class BinaryTree():
     def __init__(self, key, parent=None, level=0):
         self.left = None
@@ -59,7 +104,7 @@ class BinaryTree():
             str_tree.append(self.__str_tree_builder(node.right, level + 1))
             str_tree.append("| " * level)
             str_tree.append(
-                ''.join([str(node.data), " - ", str(node.level), "\n"]))
+                ''.join([str(node.key), " - ", str(node.level), "\n"]))
             str_tree.append(self.__str_tree_builder(node.left, level + 1))
         return ''.join(str_tree)
 
@@ -96,7 +141,6 @@ def OutputCommonManager(count):
                 if (node.right and second_employee == node.right.key):
                     second_employee_node = node.right
 
-    print org_tree.first_common_ancestor(
-        org_tree, first_employee_node, second_employee_node)
+    print org_tree
 
 OutputCommonManager(int(input()))
