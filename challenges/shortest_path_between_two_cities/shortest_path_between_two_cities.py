@@ -96,5 +96,42 @@ Output:             Output:             Output:
 1 2 4               4 2 8
 """
 
+class VertexList(list):
+
+    def __init__(self, vertex):
+        self.vertex = vertex
+
+class EdgeList(object):
+
+    def __init__(self, start_vertex, end_vertex, height):
+        self.start_vertex = start_vertex
+        self.end_vertex = end_vertex
+        self.height = height
+
+def find_shortest_path(graph, start, end, path=[]):
+        path = path + [start]
+        if start == end:
+            return path
+        if not graph.has_key(start):
+            return None
+        shortest = None
+        for node in graph[start]:
+            if node not in path:
+                newpath = find_shortest_path(graph, node, end, path)
+                if newpath:
+                    if not shortest or len(newpath) < len(shortest):
+                        shortest = newpath
+        return shortest
+
 def get_shortest_paths_between_two_cities():
     pass
+
+source, destination = map(int, raw_input().split(" "))
+N, M =  map(int, raw_input().split(" "))
+print source, destination, N, M
+for i in xrange(N):
+    mi, rim, tia, tib = raw_input().split(" ")
+    print mi, rim, tia, tib
+for i in xrange(M):
+    i, j, lij = map(int, raw_input().split(" "))
+    print i, j, lij
