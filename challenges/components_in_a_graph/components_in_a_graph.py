@@ -70,10 +70,10 @@ class UnionFind(object):
         root_q = self.find(q)
         if root_p == root_q: return
         if self.rank[root_p] < self.rank[root_q]:
-            self.parent[root_p] = root_q;
+            self.parent[root_p] = root_q
             self.rank[root_q] += self.rank[root_p]
         else:
-            self.parent[root_q] = root_p;
+            self.parent[root_q] = root_p
             self.rank[root_p] += self.rank[root_q]
 
     def element_set_size(self, p):
