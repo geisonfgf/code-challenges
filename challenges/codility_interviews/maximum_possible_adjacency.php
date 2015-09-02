@@ -46,10 +46,10 @@ function solution($A) {
     $flipped = false;
     for ($i = 0; $i < $length - 1; $i++) {
         if ($i + 2 < $length && !$flipped) {
-            if (($A[$i] == 0 && $A[$i + 1] == 1 && $A[$i + 2] == 0) || ($A[$i] == 1 && $A[$i + 1] == 0 && $A[$i + 2] == 0)) {
+            if (($A[$i] == 0 && $A[$i + 1] == 1 && $A[$i + 2] == 0) || ($A[$i] == 1 && $A[$i + 1] == 0 && $A[$i + 2] == 0) and $heads < $tails) {
                 $flipped = true;
                 $tails++;
-            } else if (($A[$i] == 1 && $A[$i + 1] == 0 && $A[$i + 2] == 1) || ($A[$i] == 0 && $A[$i + 1] == 1 && $A[$i + 2] == 1)) {
+            } else if (($A[$i] == 1 && $A[$i + 1] == 0 && $A[$i + 2] == 1) || ($A[$i] == 0 && $A[$i + 1] == 1 && $A[$i + 2] == 1) and $heads > $tails) {
                 $flipped = true;
                 $heads++;
             }
@@ -82,4 +82,8 @@ echo "\n\n";
 echo "Input: [1, 1, 0, 0, 0]\n";
 echo "Expected answer: 4\n";
 echo "My answer: ", solution([1, 1, 0, 0, 0]);
+echo "\n\n";
+echo "Input: [1, 1, 1, 1, 0, 0, 1, 1]\n";
+echo "Expected answer: 7\n";
+echo "My answer: ", solution([1, 1, 1, 1, 0, 0, 1, 1]);
 ?>

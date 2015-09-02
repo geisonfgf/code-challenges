@@ -44,11 +44,13 @@ def solution(A):
     for i in xrange(length - 1):
         if i + 2 < length and not flipped:
             if ((A[i] == 0 and A[i + 1] == 1 and A[i + 2] == 0) or
-                    (A[i] == 1 and A[i + 1] == 0 and A[i + 2] == 0)):
+                    (A[i] == 1 and A[i + 1] == 0 and A[i + 2] == 0) and
+                    heads < tails):
                 flipped = True
                 tails += 1
             elif ((A[i] == 1 and A[i + 1] == 0 and A[i + 2] == 1) or
-                    (A[i] == 0 and A[i + 1] == 1 and A[i + 2] == 1)):
+                    (A[i] == 0 and A[i + 1] == 1 and A[i + 2] == 1) and
+                    heads > tails):
                 flipped = True
                 heads += 1
 
@@ -77,3 +79,7 @@ print ""
 print "Input: [1, 1, 0, 0, 0]"
 print "Expected answer: 4"
 print "My answer: ", solution([1, 1, 0, 0, 0])
+print ""
+print "Input: [1, 1, 1, 1, 0, 0, 1, 1]"
+print "Expected answer: 7"
+print "My answer: ", solution([1, 1, 1, 1, 0, 0, 1, 1])
