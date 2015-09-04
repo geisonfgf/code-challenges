@@ -24,54 +24,30 @@ Space complexity O(N)
 */
 
 function solution($S) {
-    $ans = $S;
-    $stack = array();
-    $sub = substr($ans, -2);
-    array_push($stack, array($ans, $sub, ""));
-    while ($stack) {
-        list($ans, $sub, $left) = array_pop($stack);
-        if ($sub == "AB" || $sub == "BA") {
-            $ans = substr($ans, 0, -2) . "AA" . $left;
-            $sub = substr($ans, -2);
-            array_push($stack, array($ans, $sub, $left));
-        } else if ($sub == "CB" || $sub == "BC") {
-            $ans = substr($ans, 0, -2) . "CC" . $left;
-            $sub = substr($ans, -2);
-            array_push($stack, array($ans, $sub, $left));
-        } else if ($sub == "AA") {
-            $ans = substr($ans, 0, -2) . "A" . $left;
-            $sub = substr($ans, -2);
-            array_push($stack, array($ans, $sub, $left));
-        } else if ($sub == "CC") {
-            $ans = substr($ans, 0, -2) . "C" . $left;
-            $sub = substr($ans, -2);
-            array_push($stack, array($ans, $sub, $left));
-        } else if ((substr($ans, -2) == "AC" || substr($ans, -2) == "CA") && strlen($ans) > 2) {
-            if (strlen($ans) > 3) {
-                $sub = substr($ans, 0, 2);
-                $left = substr($ans, 2);
-                $ans = "";
-                array_push($stack, array($ans, $sub, $left));
-            } else {
-                $sub = substr($ans, 0, 2);
-                $left = substr($ans, -1);
-                $ans = "";
-                array_push($stack, array($ans, $sub, $left));
-            }
-        } else if ($left == "BAC" || $left == "BCA" || $left == "AAC" || $left == "ACA" || $left == "CAC" || $left == "CCA") {
-            $ans = $sub;
-            $sub = substr($ans, -3, -1);
-            $left = substr($ans, -1);
-            array_push($stack, array($ans, $sub, $left));
+    $aux_string = $ans = "";
+
+    for ($i = 0; $i < strlen($S); $i++) {
+        $sub = $S[$i] . $S[$i + 1];
+        if ($sub == "AB" || $sub == "BA" || $sub == "AA") {
+            $aux_string .= "A";
+        } else if ($sub == "CB" || $sub == "BC" || $sub == "CC") {
+            $aux_string .= "C";
+        } else if ($sub == "AC" || $sub == "CA") {
+            $aux_string .= $sub;
         }
     }
 
-    if ($ans) {
-        return $ans;    
-    } else {
-        return $ans . $sub . $left;
+    for ($i = 0; $i < strlen($aux_string); $i++) {
+        if ($aux_string[$i] != $aux_string[$i + 1]) {
+            $ans .= $aux_string[$i];
+        }
+        if ($i + 2 == strlen($aux_string)) {
+            $ans .= $aux_string[$i + 1];
+            break;
+        }
     }
-    
+
+    return $ans;
 }
 
 echo "Input: AABCC\n";
@@ -91,6 +67,18 @@ echo "Expected answer: CACA\n";
 echo "My answer: ". solution("CBACBA");
 echo "\n\n";
 echo "Input: BACBAC\n";
-echo "Expected answer: AC\n";
+echo "Expected answer: ACAC\n";
 echo "My answer: ". solution("BACBAC");
+echo "\n\n";
+echo "Input: BACAAC\n";
+echo "Expected answer: ACAC\n";
+echo "My answer: ". solution("BACAAC");
+echo "\n\n";
+echo "Input: BACCAC\n";
+echo "Expected answer: ACAC\n";
+echo "My answer: ". solution("BACCAC");
+echo "\n\n";
+echo "Input: ACCACAC\n";
+echo "Expected answer: ACACAC\n";
+echo "My answer: ". solution("ACCACAC");
 ?>

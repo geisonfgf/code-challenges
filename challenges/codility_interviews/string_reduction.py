@@ -23,39 +23,24 @@ Space complexity O(N)
 """
 
 def solution(S):
-    ans = S
-    stack = []
-    sub = ans[-2:]
-    stack.append([ans, sub, ""])
-    while stack:
-        ans, sub, left = stack.pop()
-        if sub == "AB" or sub == "BA":
-            ans = ans[:-2] + "AA" + left
-            sub = ans[-2:]
-            stack.append([ans, sub, left])
-        elif sub == "CB" or sub == "BC":
-            ans = ans[:-2] + "CC" + left
-            sub = ans[-2:]
-            stack.append([ans, sub, left])
-        elif sub == "AA":
-            ans = ans[:-2] + "A" + left
-            sub = ans[-2:]
-            stack.append([ans, sub, left])
-        elif sub == "CC":
-            ans = ans[:-2] + "C" + left
-            sub = ans[-2:]
-            stack.append([ans, sub, left])
-        elif (ans[-2:] == "AC" or ans[-2:] == "CA") and len(ans) > 2:
-            if len(ans) > 3:
-                sub = ans[:2]
-                left = ans[3:]
-                ans = ""
-                stack.append([ans, sub, left])
-            else:
-                sub = ans[:2]
-                left = ans[-1]
-                ans = ""
-                stack.append([ans, sub, left])
+    aux_string, ans = "", ""
+
+    for i in xrange(len(S) - 1):
+        sub = S[i] + S[i + 1]
+        if sub == "AB" or sub == "BA" or sub == "AA":
+            aux_string += "A"
+        elif sub == "CB" or sub == "BC" or sub == "CC":
+            aux_string += "C"
+        elif sub == "AC" or sub == "CA":
+            aux_string += sub
+
+    for i in xrange(len(aux_string) - 1):
+        if aux_string[i] != aux_string[i + 1]:
+            ans += aux_string[i]
+        if i + 2 == len(aux_string):
+            ans += aux_string[i + 1]
+            break
+
     return ans
 
 print "Input: AABCC"
@@ -75,5 +60,17 @@ print "Expected answer: CACA"
 print "My answer: ", solution("CBACBA")
 print ""
 print "Input: BACBAC"
-print "Expected answer: AC"
+print "Expected answer: ACAC"
 print "My answer: ", solution("BACBAC")
+print ""
+print "Input: BACAAC"
+print "Expected answer: ACAC"
+print "My answer: ", solution("BACAAC")
+print ""
+print "Input: BACCAC"
+print "Expected answer: ACAC"
+print "My answer: ", solution("BACCAC")
+print ""
+print "Input: ACCACAC"
+print "Expected answer: ACACAC"
+print "My answer: ", solution("ACCACAC")
