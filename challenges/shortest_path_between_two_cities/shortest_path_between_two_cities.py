@@ -96,23 +96,73 @@ Output:             Output:             Output:
 1 2 4               4 2 8
 """
 
-def get_shortest_paths_between_two_cities():
-    pass
+def dijsktra(graph, start, end):
+    D, P = {}, {}
+    
+    for node in graph.keys():
+        D[node] = -1
+        P[node] = ""
+
+    D[start] = 0
+    unseen_nodes = graph.keys()
+
+    while len(unseen_nodes) > 0:
+        shortest = None
+        node = ""
+        for temp_node in unseen_nodes:
+            if shortest is None or D[temp_node] < shortest:
+                shortest = D[temp_node]
+                node = temp_node
+
+        unseen_nodes.remove(node)
+
+        for child_node, child_value in graph[node].items():
+            if D[child_node] < D[node] + child_value:
+                D[child_node] = D[node] + child_value
+                P[child_node] = node
+
+    path = []
+    node = end
+
+    while not (node == start):
+        if path.count(node) == 0:
+            path.insert(0, node)
+            node = P[node]
+        else:
+            break
+
+    path.insert(0, start)
+
+    return path
+
+def distance(graph, path):
+    distance = 0
+    for i in xrange(1, len(path)):
+        try:
+            distance += graph[path[i]][path[i - 1]]
+        except:
+            return 0
+    return distance
 
 source, destination = map(int, raw_input().split(" "))
-N, M =  map(int, raw_input().split(" "))
+N, M = map(int, raw_input().split(" "))
+graph = {}
 vertex_list, adjacent_list = {}, []
 
 for i in xrange(1, N+1):
     mi, rim, tia, tib = raw_input().split(" ")
-    vertex_list[i] = [str(mi), int(rim), int(tia), int(tib)]
+    graph1[str(i)] = {}
 
 for i in xrange(M):
     i, j, lij = map(int, raw_input().split(" "))
-    adjacent_list.append([i, j, lij])
+    graph1[str(i)][str(j)] = lij
+    graph1[str(j)][str(i)] = lij
 
-print vertex_list
-print adjacent_list
+path = dijsktra(graph1, str(source), str(destination))
+distance = distance(graph1, path)
+print path
+print distance
+print graph1
 
 """
 Vertex List
