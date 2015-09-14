@@ -96,78 +96,48 @@ Output:             Output:             Output:
 1 2 4               4 2 8
 """
 
-def dijsktra(graph, start, end):
-    D, P = {}, {}
-    
-    for node in graph.keys():
-        D[node] = -1
-        P[node] = ""
+def find_all_paths(graph, start, end, path=[]):
+    path = path + [start]
+    if start == end:
+        return [path]
+    if not graph.has_key(start):
+        return []
+    paths = []
+    for node in graph[start]:
+        if node not in path:
+            newpaths = find_all_paths(graph, node, end, path)
+            for newpath in newpaths:
+                paths.append(newpath)
+    return paths
 
-    D[start] = 0
-    unseen_nodes = graph.keys()
-
-    while len(unseen_nodes) > 0:
-        shortest = None
-        node = ""
-        for temp_node in unseen_nodes:
-            if shortest is None or D[temp_node] < shortest:
-                shortest = D[temp_node]
-                node = temp_node
-
-        unseen_nodes.remove(node)
-
-        for child_node, child_value in graph[node].items():
-            if D[child_node] < D[node] + child_value:
-                D[child_node] = D[node] + child_value
-                P[child_node] = node
-
-    path = []
-    node = end
-
-    while not (node == start):
-        if path.count(node) == 0:
-            path.insert(0, node)
-            node = P[node]
-        else:
-            break
-
-    path.insert(0, start)
-
-    return path
-
-def distance(graph, path):
-    distance = 0
-    for i in xrange(1, len(path)):
-        try:
-            distance += graph[path[i]][path[i - 1]]
-        except:
-            return 0
-    return distance
 
 source, destination = map(int, raw_input().split(" "))
 N, M = map(int, raw_input().split(" "))
 graph = {}
 vertex_list, adjacent_list = {}, []
 
-for i in xrange(1, N+1):
+for i in xrange(1, N + 1):
     mi, rim, tia, tib = raw_input().split(" ")
-    graph1[str(i)] = {}
+    graph[str(i)] = {}
 
 for i in xrange(M):
     i, j, lij = map(int, raw_input().split(" "))
-    graph1[str(i)][str(j)] = lij
-    graph1[str(j)][str(i)] = lij
+    graph[str(i)][str(j)] = lij
+    graph[str(j)][str(i)] = lij
 
-path = dijsktra(graph1, str(source), str(destination))
-distance = distance(graph1, path)
-print path
-print distance
-print graph1
+shortest = 0
+shortest_paths = []
+paths = find_all_paths(graph, str(source), str(destination))
+if paths:
+    shortest = min([len(path) for path in paths])
+    shortest_paths = [path for path in paths if len(path) == shortest]
+
+print shortest_paths
 
 """
 Vertex List
 {
-  1: ['A', 2, 16, 99],
+  1: ['A', 2, 16, 99], #mi, rim, tia, tib
   2: ['B', 6, 32, 13],
   3: ['B', 2, 87, 4],
   4: ['B', 38, 96, 49]
