@@ -167,7 +167,7 @@ def distance(graph, path):
     distance = 0
     for i in xrange(1, len(path)):
         try:
-            distance += graph[path[i]][path[i - 1]]
+            distance += graph[path[i - 1]][path[i]]
         except:
             return 0
     return distance
